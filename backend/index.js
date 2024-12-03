@@ -13,7 +13,11 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+const corsOption={
+  origin:' http://localhost:5173',
+  credentials:true
+};
+app.use(cors(corsOption)); 
 app.use(bodyParser.json());
 
 // Database connection

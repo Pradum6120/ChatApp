@@ -5,6 +5,13 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+
+    username:{
+        type: String,
+        required: true,
+        unique: true
+    },
+
     email: {
         type: String,
         required: true,
@@ -14,9 +21,15 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    confirmPassword: {
+    profilePhoto:{
         type: String,
+        default:""
     },
+    gender:{
+        type: String,
+        enum:["male", "female"],
+        required: true
+    }
 }, { timestamps: true }); // createdAt & updatedAt
 
 const User = mongoose.model("User", userSchema);

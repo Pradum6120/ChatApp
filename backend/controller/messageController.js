@@ -5,21 +5,21 @@ import User from "../models/userModel.js";
 const sendMessage = async (req, res) => {
   try {
     const { message } = req.body;
-    const { id } = req.params; // Receiver's ID
+    let { id } = req.params; // Receiver's ID
     const senderId = req.user; // Sender's ID (currentUser)
-
+    id = id.trim();
     // Fixing the query for finding an existing conversation
     let conversation = await Conversation.findOne({
       $and: [
-        { members: { $in: [senderId] } }, 
-        { members: { $in: [id] } }
-      ]
+        { members: { $in: [senderId] } },
+        { members: { $in: [id] } },
+      ],
     });
 
     // If no conversation exists, create a new one
     if (!conversation) {
       conversation = new Conversation({
-        members: [senderId, id]
+        members: [senderId, id],
       });
       await conversation.save(); // Save the new conversation
     }
@@ -28,7 +28,7 @@ const sendMessage = async (req, res) => {
     const newMessage = new Message({
       senderId,
       receiverId: id, // Assuming 'receiverId' should be used
-      message
+      message,
     });
 
     // Push the message reference to the conversation's messages array
@@ -39,52 +39,50 @@ const sendMessage = async (req, res) => {
 
     // Send the response with the new message
     return res.status(201).json({
-      newMessage
+      newMessage,
     });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",
-      error: error.message
+      error: error.message,
     });
   }
 };
 
-const getMessage = async(req,res)=>{
-     try{
-          const {id} = req.params
-         //current user 
-          const currentUser = req.user
+const getMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // current user
+    const currentUser = req.user;
 
-     if(!id && !currentUser){
-      return res.status(500).json({
-         message: "no user found"
-      })
-     }
+    if (!id || !currentUser) {
+      return res.status(400).json({
+        message: "User or conversation ID not found",
+      });
+    }
 
-     const conversation = await Conversation.findOne({
+    const conversation = await Conversation.findOne({
       members: {
-         $all:[id, currentUser]
-      }
-     }).populate("messages")
-     
+        $all: [id, currentUser],
+      },
+    }).populate("messages")
+    .populate("members");
 
-     if(!conversation)
-      {
-         return res.send(200).json({
-            mesaage: "no conversation"
-         })
+    if (!conversation) {
+      return res.status(200).json({
+        message: "No conversation found",
+      });
+    }
 
-     }
+    return res.status(200).json({
+      conversation,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
 
-     return res.status(200).json({
-        conversation : conversation
-     })
-   }
-   catch(error){
-      return res.status(500).json({
-         error : error.message
-      })
-   }
-}
-
-export {sendMessage, getMessage}
+export { sendMessage, getMessage };
