@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken } from "../store/authSlice"
+import { setauthUser } from  "../store/UserSlice"
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -31,9 +32,11 @@ function Login() {
         if (response.ok && result.success) {
             localStorage.setItem("token", result.token)
             dispatch(setToken(result.token));
+            dispatch(setauthUser(result.userdetails))
             navigate('/'); // Navigate to home page on successful signup
           }
         }
+
         catch(error){
             console.log(error)
         }

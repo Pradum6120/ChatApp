@@ -75,9 +75,7 @@ const getMessage = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      conversation,
-    });
+    return res.status(200).json(conversation?.messages);
   } catch (error) {
     return res.status(500).json({
       error: error.message,

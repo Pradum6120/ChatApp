@@ -1,13 +1,14 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { setConversation}  from "../store/UserSlice"
+import { setConversation , setcurrentChatReciever}  from "../store/UserSlice"
 
 
 function OtherUsers({user}) {
   const dispatch = useDispatch()
-  const handle = async (id) => {
+  const handle = async (user) => {
+    dispatch(setcurrentChatReciever(user))
     // code to open chat window with selected user
-    console.log("userid" , id)
+    console.log("user" , user)
     const token = localStorage.getItem('token');
     console.log(token)
     if (!token) {
@@ -16,6 +17,7 @@ function OtherUsers({user}) {
       return;
     }
     try{
+      const id = user._id
       const response = await fetch(`http://localhost:8000/api/message/get/${id}`, {
          method: "GET",
 
@@ -37,7 +39,7 @@ function OtherUsers({user}) {
     }
   }
   return (
-    <div onClick={()=>handle(user._id)}className='w-[100%] h-16 flex items-center justify-start p-10 gap-4 shadow-inner'>
+    <div onClick={()=>handle(user)}className='w-[100%] h-16 flex items-center justify-start p-10 gap-4 shadow-inner'>
     <div className='w-14 h-14 bg-red-700 rounded-full'>
     <img className='w-14 h-14 rounded-full' src={user.profilePhoto} alt="" />
     </div>

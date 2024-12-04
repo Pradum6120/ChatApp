@@ -4,7 +4,8 @@ import {createSlice} from "@reduxjs/toolkit"
      name: "User",
      initialState:{
         User : null,
-        Conversation : null
+        Conversation : null,
+        currentChatReciever : null
      },
 
      reducers:{
@@ -13,10 +14,13 @@ import {createSlice} from "@reduxjs/toolkit"
         },
         setConversation:(state, action)=> {
             state.Conversation = action.payload
-        }
+        }, 
+        setcurrentChatReciever :(state, action)=> {
+         state.currentChatReciever = action.payload
+     }
 
      }
  })
 
- export const {setauthUser, setConversation} = userSlice.actions
+ export const {setauthUser, setConversation, setcurrentChatReciever} = userSlice.actions
  export default userSlice.reducer
