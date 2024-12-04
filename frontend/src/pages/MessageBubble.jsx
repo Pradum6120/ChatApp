@@ -3,37 +3,27 @@ import { useSelector } from 'react-redux';
 
 function MessageBubble({message}) {
   const loginUser= useSelector((state) => state.User.User);
+  const chatuser = useSelector((state) => state.User.currentChatReciever);
+
+
 
   return (
     <>
-      <div className="chat chat-start">
+      <div className={`chat ${loginUser.id === message.senderId ? "chat-end" : "chat-start"}`}>
   <div className="chat-image avatar">
     <div className="w-10 rounded-full">
       <img
         alt="Tailwind CSS chat bubble component"
-        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        src= {loginUser.id === message.senderId ? loginUser.profilepicture: chatuser.profilePhoto}/>
     </div>
   </div>
   <div className="chat-header">
-    Obi-Wan Kenobi
+    {loginUser.id === message.senderId ? loginUser.name: chatuser.fullname}
     <time className="text-xs opacity-50">12:45</time>
   </div>
-  <div className="chat-bubble bg-orange-300 text-black">You were the Chosen One!</div>
-</div>
-<div className="chat chat-end">
-  <div className="chat-image avatar">
-    <div className="w-10 rounded-full">
-      <img
-        alt="Tailwind CSS chat bubble component"
-        src="loginUser.profilepicture" />
-    </div>
-  </div>
-  <div className="chat-header">
-    loginUser.name
-    <time className="text-xs opacity-50">12:46</time>
-  </div>
-  <div className="chat-bubble bg-yellow-400 text-black">{message}</div>
-</div>
+  <div className="chat-bubble bg-orange-300 text-black">{message.message}</div>
+</div> 
+
     </>
   )
 }

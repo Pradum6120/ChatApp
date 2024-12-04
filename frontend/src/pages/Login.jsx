@@ -32,6 +32,7 @@ function Login() {
         if (response.ok && result.success) {
             localStorage.setItem("token", result.token)
             dispatch(setToken(result.token));
+            localStorage.setItem('loginUser', JSON.stringify(result.userdetails));
             dispatch(setauthUser(result.userdetails))
             navigate('/'); // Navigate to home page on successful signup
           }

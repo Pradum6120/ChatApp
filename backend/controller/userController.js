@@ -78,6 +78,7 @@ const login = async (req, res) => {
         message: "login successfully",
         success: true,
         userdetails:{
+          id: user._id,
          name : user.fullname,
          profilepicture : user.profilePhoto,
          username : user.username

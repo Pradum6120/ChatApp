@@ -5,6 +5,8 @@ import { FaSearch } from 'react-icons/fa';
 import { IoSend } from 'react-icons/io5';
 import Navbar from './Navbar';
 import { useSelector } from 'react-redux';
+import { setauthUser } from  "../store/UserSlice"
+import { useDispatch } from 'react-redux';
 
 function Home() {
   const conversation = useSelector((state) => state.User.Conversation);
@@ -15,9 +17,9 @@ function Home() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSend = () =>{
-     console.log(message)
-  }
+  const dispatch = useDispatch();
+
+ 
 
   const getAllUsers = async () => {
     const token = localStorage.getItem('token');
@@ -51,7 +53,11 @@ function Home() {
 
   useEffect(() => {
     getAllUsers();
+    const loginUser = JSON.parse(localStorage.getItem('loginUser'));
+    dispatch(setauthUser(loginUser))
   }, []);
+
+  
 
   const handleSendMessage = async () => {
     const token = localStorage.getItem('token');
@@ -61,6 +67,7 @@ function Home() {
       return;
     }
 
+    
   try {
       const response = await fetch(`http://localhost:8000/api/message/send/${chatuser._id}`, {
         method: 'POST',
@@ -132,7 +139,8 @@ function Home() {
             <div className="p-11 overflow-y-auto h-[80%] w-[100%]">
               {conversation && conversation.length > 0 ? (
                 conversation.map((message) => (
-                  <MessageBubble key={message.id} message={message.message} />
+                   
+                  <MessageBubble key={message.id} message={message}  />
                 ))
               ) : (
                 <div className="flex justify-center items-center w-[100%] h-[100%]">

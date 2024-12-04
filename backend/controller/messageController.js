@@ -67,7 +67,6 @@ const getMessage = async (req, res) => {
         $all: [id, currentUser],
       },
     }).populate("messages")
-    .populate("members");
 
     if (!conversation) {
       return res.status(200).json({
