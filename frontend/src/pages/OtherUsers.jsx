@@ -1,45 +1,22 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { setConversation , setcurrentChatReciever}  from "../store/UserSlice"
+import { setMessageReciever } from "../store/UserSlice"
+import { getMessage } from '../store/UserSlice';
+import { useSelector } from 'react-redux';
 
 
 function OtherUsers({user}) {
-  const dispatch = useDispatch()
-  const handle = async (user) => {
-    dispatch(setcurrentChatReciever(user))
-    // code to open chat window with selected user
-    console.log("user" , user)
-    const token = localStorage.getItem('token');
-    console.log(token)
-    if (!token) {
-      console.log('No token found!');
-    
-      return;
-    }
-    try{
-      const id = user._id
-      const response = await fetch(`http://localhost:8000/api/message/get/${id}`, {
-         method: "GET",
+  const dispatch = useDispatch();
 
-         headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-
-         
-       });
-       const result = await response.json()
-       dispatch(setConversation(result))
-       console.log(result)
-    
-
-    }
-    catch(err){
-      console.log(err)
-     
-    }
+   const handleChat = (user) => {
+    const userid = user._id
+    console.log(userid)
+     dispatch(setMessageReciever(user));
+     dispatch(getMessage(userid))
   }
+
   return (
-    <div onClick={()=>handle(user)}className='w-[100%] h-16 flex items-center justify-start p-10 gap-4 shadow-inner'>
+    <div onClick={()=>handleChat(user)} className='w-[100%] h-16 flex items-center justify-start p-10 gap-4 shadow-inner'>
     <div className='w-14 h-14 bg-red-700 rounded-full'>
     <img className='w-14 h-14 rounded-full' src={user.profilePhoto} alt="" />
     </div>
