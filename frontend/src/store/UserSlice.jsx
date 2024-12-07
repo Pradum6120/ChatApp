@@ -94,6 +94,7 @@ export const userSlice = createSlice({
     User: null,
     currentChatReciever: null,
     otherUsers: [],
+    onlineUsers: [],
     Conversation:[],
     sendMessage: [],
     loading: false,
@@ -105,6 +106,9 @@ export const userSlice = createSlice({
     },
     setMessageReciever:(state, action)=>{
       state.currentChatReciever = action.payload;
+    },
+    setonlineUsers:(state, action)=>{
+      state.onlineUsers = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -127,7 +131,7 @@ export const userSlice = createSlice({
       })
       .addCase(getMessage.fulfilled, (state, action) => {
         state.loading = false;
-        state.Conversation = action.payload ;  // Assuming messages are in 'messages' key
+        state.Conversation = action.payload  ;  // Assuming messages are in 'messages' key
       })
       .addCase(getMessage.rejected, (state, action) => {
         state.loading = false;
@@ -140,7 +144,8 @@ export const userSlice = createSlice({
       })
       .addCase(handleSendMessage.fulfilled, (state, action) => {
         state.loading = false;
-        state.Conversation.push(action.payload.message);
+        state.Conversation = [...state.Conversation, action.payload.newMessage];
+
       })
       .addCase(handleSendMessage.rejected, (state, action) => {
         state.loading = false;
@@ -149,6 +154,6 @@ export const userSlice = createSlice({
   }
 });
 
-export const { setauthUser , setMessageReciever} = userSlice.actions;
+export const { setauthUser , setMessageReciever, setonlineUsers} = userSlice.actions;
 
 export default userSlice.reducer;

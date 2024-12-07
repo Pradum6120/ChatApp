@@ -1,16 +1,15 @@
-import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import db from './Db/index.js'; // ES Module import
 import UserRoutes from './routes/user.routes.js'; // ES Module import
 import messageRoutes from './routes/message.routes.js'
+import { server,app } from './Socket.io/server.js';
 
 // Initialize environment variables
 dotenv.config();
 
 // Initialize the app
-const app = express();
 
 // Middleware
 const corsOption={
@@ -34,6 +33,7 @@ app.use('/api/message', messageRoutes);
 
 // Start server
 const port = process.env.PORT || 8000;
-app.listen(port, () => {
+
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

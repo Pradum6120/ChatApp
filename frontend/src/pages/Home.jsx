@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react';
 import Lhome from './Lhome';
 import RHome from './RHome';
 import Navbar from './Navbar';
-import { useDispatch } from 'react-redux';
-import { setauthUser } from '../store/UserSlice';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 
 
 function Home() {
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const loginUserLS = localStorage.getItem("loginUser")
+  const loginUser = useSelector((state) => state.User.User)
 
   useEffect(() => {
-    const loginUser = JSON.parse(localStorage.getItem('loginUser'));
-    dispatch(setauthUser(loginUser))
-  
-  }, [])
+    if (!loginUser) {
+      navigate("/login");
+    }
+  }, [ ]);
+
+ 
   
 
   return (

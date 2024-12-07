@@ -67,13 +67,7 @@ const getMessage = async (req, res) => {
         $all: [id, currentUser],
       },
     }).populate("messages")
-
-    if (!conversation) {
-      return res.status(200).json({
-        message: "No conversation found",
-      });
-    }
-
+    
     return res.status(200).json(conversation?.messages);
   } catch (error) {
     return res.status(500).json({

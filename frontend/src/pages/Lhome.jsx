@@ -6,15 +6,14 @@ import OtherUsers from './OtherUsers';
 
 
 function Lhome() {
-  const { otherUsers: otherUsersList, loading, error } = useSelector((state) => state.User);
+  const { otherUsers: otherUsersList} = useSelector((state) => state.User);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(otherUsers());  // Dispatch action to fetch other users
+    dispatch(otherUsers()); // Dispatch action to fetch other users
   }, [dispatch]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  
 
   return (
     <div className="w-[27%] h-[100%] rounded-tl-3xl rounded-bl-3xl border border-white">
@@ -30,15 +29,12 @@ function Lhome() {
 
       {/* User List */}
       <div className="flex flex-col w-[100%] h-[85%] overflow-y-auto rounded-bl-3xl">
-        {otherUsersList.length > 0 ? (
           <ul>
             {otherUsersList.map((userItem) => (
                <OtherUsers key={userItem.id} user={userItem} />
             ))}
           </ul>
-        ) : (
-          <p>No users found.</p>
-        )}
+       
       </div>
     </div>
   );

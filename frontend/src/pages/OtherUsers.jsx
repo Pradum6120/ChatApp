@@ -10,7 +10,6 @@ function OtherUsers({user}) {
 
    const handleChat = (user) => {
     const userid = user._id
-    console.log(userid)
      dispatch(setMessageReciever(user));
      dispatch(getMessage(userid))
   }
